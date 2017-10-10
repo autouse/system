@@ -15,9 +15,30 @@ skipNextLine:
     jmp inputLoop
 ; end execution
     jmp halt
+; binary invoke
+binaryInvoke:
+    mov si,offsetTable
+    mov ax,[si+1]
+    call ax
+; offset table
+offsetTable:
+    dw putc
+    dw puts
+    dw biosKey
+    dw biosSetFullBlockCursor
+    dw halt
+    dw 0
+; name table
+nameTable:
+    db 'putc',0
+    db 'puts',0
+    db 'biosKey',0
+    db 'biosSetFullBlockCursor',0
+    db 'halt',0
+    db 0
 ; data
 systemMessage:
-    db 0Dh,0Ah,'System i386 version 0.1',0Dh,0Ah,0
+    db 0Dh,0Ah,'System i386 version 0.11',0Dh,0Ah,0
 ; bios
 biosSetFullBlockCursor:
     mov cx,7
