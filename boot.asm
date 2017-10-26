@@ -1,9 +1,11 @@
 ; system boot record
     org 7C00h
 ; main function
+    call biosSetFullBlockCursor
     mov si,systemMessage
     call puts
-    call biosSetFullBlockCursor
+;   call memory
+
 inputLoop:
     call biosKey
     cmp al,0Dh
@@ -33,12 +35,12 @@ nameTable:
     db 'putc',0
     db 'puts',0
     db 'biosKey',0
-    db 'biosSetFullBlockCursor',0
+;    db 'biosSetFullBlockCursor',0
     db 'halt',0
     db 0
 ; data
 systemMessage:
-    db 0Dh,0Ah,'System i386 version 0.11',0Dh,0Ah,0
+    db 0Dh,0Ah,'Intel x86 cpu core interface',0Dh,0Ah,'.',0
 ; bios
 biosSetFullBlockCursor:
     mov cx,7
@@ -53,22 +55,26 @@ biosKey:
 halt:
     hlt
     jmp halt
-puts:
-    push si
-    mov al,byte [cs:si]
-    cmp al,0
-    je puts.end
-    call putc
-    pop si
-    inc si
-    jmp puts
-puts.end:
-    ret
-putc:
-    mov ah,0Eh
-    mov bx,7
-    int 10h
-    ret
+;puts:
+;    push si
+;    mov al,byte [cs:si]
+;    cmp al,0
+;    je puts.end
+;    call putc
+;    pop si
+;    inc si
+;    jmp puts
+;puts.end:
+;    ret
+;putc:
+;    mov ah,0Eh
+;    mov bx,7
+;    int 10h
+;    ret
+;;
+
+%include "memory.asm"
+
 ; some free space
 times 512 - $ + $$ - 2 - 64 db 0
 ; active partition type 7F
