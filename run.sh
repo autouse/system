@@ -1,2 +1,1 @@
-nasm boot.asm
-qemu-system-i386 boot
+qemu-system-i386 image
